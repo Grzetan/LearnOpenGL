@@ -1,5 +1,7 @@
-// g++ -pthread hello_world.c -lglfw -lGL -lXrandr -lXi -lXinerama -lX11 -lrt -ldl
+// g++ -pthread hello_world.c -lglfw -lGL -lXrandr -lXi -lXinerama -lX11 -lrt -ldl -lGLEW
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <iostream>
 
 int main(void)
 {
@@ -20,11 +22,22 @@ int main(void)
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
+    if(glewInit() != GLEW_OK){
+        std::cout << "Error!" << std::endl;
+    }
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glBegin(GL_TRIANGLES);
+        glVertex2f(-0.5f, -0.5f);
+        glVertex2f(0.0f, 0.5f);
+        glVertex2f(0.5f, -0.5f);
+
+        glEnd();
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
