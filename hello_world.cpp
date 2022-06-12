@@ -6,6 +6,24 @@
 #include <string>
 #include <sstream>
 
+static void glClearError(){
+    while(glGetError() != GL_NO_ERROR);
+}
+
+static void glCheckError(){
+    while(GLenum error = glGetError()){
+        std::cout << error << std::endl;
+    }
+}
+
+static bool glLogCall(){
+    while(GLenum error = glGetError()){
+        std::cout << error << std::endl;
+        return false;
+    }
+    return true;
+}
+
 struct ShaderSource{
     std::string VertexSource;
     std::string FragmentSource;
@@ -138,7 +156,9 @@ int main(void)
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
+        glClearError();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        glCheckError();
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
